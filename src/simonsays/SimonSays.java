@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 
 
+
 public class SimonSays implements ActionListener, MouseListener
 {
 
@@ -27,9 +28,10 @@ public class SimonSays implements ActionListener, MouseListener
     public SimonSays() 
     {
         JFrame frame = new JFrame("SimonSays");
-        Timer timer = new Timer(20, this);
-        
+   
         simonPanel = new SimonPanel();
+        
+        Timer gameTimer = new Timer(20, this);
         
         frame.setSize(WIDTH, HEIGHT + 5);
         frame.setVisible(true);
@@ -38,7 +40,7 @@ public class SimonSays implements ActionListener, MouseListener
         frame.addMouseListener(this);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        timer.start();
+        gameTimer.start();
         
     }
     
@@ -69,6 +71,8 @@ public class SimonSays implements ActionListener, MouseListener
             g.setColor(Color.GREEN.darker());
         
         }
+        g.fillRect(0, 0, WIDTH / 2, HEIGHT / 2);
+        
         
         if(light == 2)
         {
@@ -77,8 +81,9 @@ public class SimonSays implements ActionListener, MouseListener
         else
         {
             g.setColor(Color.RED.darker());
-        
         }
+        g.fillRect(WIDTH / 2, 0, WIDTH / 2, HEIGHT / 2);
+        
         
         if(light == 3)
         {
@@ -87,8 +92,9 @@ public class SimonSays implements ActionListener, MouseListener
         else
         {
             g.setColor(Color.YELLOW.darker());
-        
         }
+        g.fillRect(0, HEIGHT / 2, WIDTH / 2, HEIGHT / 2);
+        
         
         if(light == 4)
         {
@@ -99,14 +105,6 @@ public class SimonSays implements ActionListener, MouseListener
             g.setColor(Color.BLUE.darker());
         
         }
-        
-        g.setColor(Color.GREEN.darker());
-        g.fillRect(0, 0, WIDTH / 2, HEIGHT / 2);
-        g.setColor(Color.RED.darker());
-        g.fillRect(WIDTH / 2, 0, WIDTH / 2, HEIGHT / 2);
-        g.setColor(Color.YELLOW.darker());
-        g.fillRect(0, HEIGHT / 2, WIDTH / 2, HEIGHT / 2);        
-        g.setColor(Color.BLUE.darker());
         g.fillRect(WIDTH / 2, HEIGHT / 2, WIDTH / 2, HEIGHT / 2);
         
         
@@ -135,14 +133,13 @@ public class SimonSays implements ActionListener, MouseListener
     @Override
     public void mousePressed(MouseEvent me) 
     {
-        
         int x = me.getX(), y = me.getY();
         
         if(x > 0 && x < WIDTH / 2 && y > 0 && y < HEIGHT / 2)
         {
             light = 1;
         }
-        else if(x > WIDTH / 2 && x < WIDTH && y < 0 && y < HEIGHT / 2)
+        else if(x > WIDTH / 2 && x < WIDTH && y > 0 && y < HEIGHT / 2)
         {
             light = 2;
         }
@@ -173,5 +170,7 @@ public class SimonSays implements ActionListener, MouseListener
     {
         
     }
+
+    
     
 }

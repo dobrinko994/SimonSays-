@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 public class SimonPanel extends JPanel 
 {
-
+ 
     @Override
     protected void paintComponent(Graphics g) 
     {
@@ -17,7 +17,8 @@ public class SimonPanel extends JPanel
         {
             SimonSays.simonSays.paint((Graphics2D) g);
         }
-        
+         
     }
+
     
 }
