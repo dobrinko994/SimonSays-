@@ -2,15 +2,21 @@
 package simonsays;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 public class SimonPanel extends JPanel 
 {
 
     @Override
-    protected void paintComponent(Graphics grphcs) 
+    protected void paintComponent(Graphics g) 
     {
-        super.paintComponent(grphcs); //To change body of generated methods, choose Tools | Templates.
+        super.paintComponent(g); 
+        
+        if(SimonSays.simonSays != null)
+        {
+            SimonSays.simonSays.paint((Graphics2D) g);
+        }
         
     }
     
