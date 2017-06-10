@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
@@ -23,7 +25,13 @@ public class SimonSays implements ActionListener, MouseListener
     
     public static final int WIDTH = 520, HEIGHT = 530;
     
-    public int light = 0;
+    public int light = 0, ticks, stepsIndex, dark;
+    
+    public boolean creatingSteps = true;
+    
+    public ArrayList<Integer> steps;
+    
+    public Random random;
     
     public SimonSays() 
     {
@@ -40,8 +48,17 @@ public class SimonSays implements ActionListener, MouseListener
         frame.addMouseListener(this);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        start();
+        
         gameTimer.start();
         
+    }
+    
+    public void start()
+    {
+        random = new Random();
+        
+        steps = new ArrayList<>();
     }
     
     public static void main(String[] args) 
@@ -52,6 +69,22 @@ public class SimonSays implements ActionListener, MouseListener
     @Override
     public void actionPerformed(ActionEvent e) 
     {
+        ticks++;
+        
+        if(ticks % 20 == 0) // zbog tajmera (osvjetljenje traje sekundu ako nismo kliknuli na drugo polje)
+        {
+            light = 0;
+            
+            if(creatingSteps) //prilikom pokretanja polja svijetle 
+            {
+                light = random.nextInt(4);
+                steps.add(light);
+                //dark = 2;
+            }
+            
+            //dark--;
+        }
+        
         simonPanel.repaint();
     }
     
@@ -135,21 +168,28 @@ public class SimonSays implements ActionListener, MouseListener
     {
         int x = me.getX(), y = me.getY();
         
-        if(x > 0 && x < WIDTH / 2 && y > 0 && y < HEIGHT / 2)
+        if(!creatingSteps) // ne moze se kliknuti na polje dok se kreiraju koraci igre
         {
-            light = 1;
-        }
-        else if(x > WIDTH / 2 && x < WIDTH && y > 0 && y < HEIGHT / 2)
-        {
-            light = 2;
-        }
-        else if(x > 0 && x < WIDTH / 2 && y > HEIGHT / 2 && y < HEIGHT)
-        {
-            light = 3;
-        }
-        else if(x > WIDTH / 2 && x < WIDTH && y > HEIGHT / 2 && y < HEIGHT)
-        {
-            light = 4;
+            if(x > 0 && x < WIDTH / 2 && y > 0 && y < HEIGHT / 2)
+            {
+                light = 1;
+                ticks = 1;
+            }
+            else if(x > WIDTH / 2 && x < WIDTH && y > 0 && y < HEIGHT / 2)
+            {
+                light = 2;
+                ticks = 1;
+            }
+            else if(x > 0 && x < WIDTH / 2 && y > HEIGHT / 2 && y < HEIGHT)
+            {
+                light = 3;
+                ticks = 1;
+            }
+            else if(x > WIDTH / 2 && x < WIDTH && y > HEIGHT / 2 && y < HEIGHT)
+            {
+                light = 4;
+                ticks = 1;
+            }
         }
     }
 
