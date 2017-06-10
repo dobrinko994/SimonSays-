@@ -29,7 +29,7 @@ public class SimonSays implements ActionListener, MouseListener
     
     public boolean creatingSteps = true;
     
-    public ArrayList<Integer> steps;
+    public ArrayList<Integer> steps; //Korake predstavljamo kao niz int-ova 
     
     public Random random;
     
@@ -74,19 +74,39 @@ public class SimonSays implements ActionListener, MouseListener
         if(ticks % 20 == 0) // zbog tajmera (osvjetljenje traje sekundu ako nismo kliknuli na drugo polje)
         {
             light = 0;
-            
-            if(creatingSteps) //prilikom pokretanja polja svijetle 
+           
+            if(dark >= 0)//?
             {
-                light = random.nextInt(4);
-                steps.add(light);
-                //dark = 2;
+                dark--;
             }
+        }
             
-            //dark--;
+        if(creatingSteps) //prilikom pokretanja polja svijetle 
+        {
+            if(dark <=0)
+            {
+                if(stepsIndex >= steps.size())
+                {
+                    light = random.nextInt(40) % 4 + 1; //da bi povecali "stepen slucajnosti"
+                    steps.add(light);
+                    stepsIndex = 0;
+                    creatingSteps = false;
+                }
+                else
+                {
+                    light = steps.get(stepsIndex);
+                    stepsIndex++;
+                }        
+                dark = 2;
+            }
+          
         }
         
+               
         simonPanel.repaint();
     }
+        
+    
     
     public void paint(Graphics2D g)
     {
@@ -189,6 +209,22 @@ public class SimonSays implements ActionListener, MouseListener
             {
                 light = 4;
                 ticks = 1;
+            }
+            
+            if(light != 0 && !creatingSteps)
+            {
+                if(stepsIndex >= steps.size())
+                {
+                    creatingSteps = true;
+                    stepsIndex = 0;
+                    dark = 2;
+                    light = 0;
+                }
+                else if(light == steps.get(stepsIndex))
+                {
+                    stepsIndex++;
+                }
+            
             }
         }
     }
