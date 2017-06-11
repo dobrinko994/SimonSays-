@@ -83,7 +83,7 @@ public class SimonSays implements ActionListener, MouseListener
             
         if(creatingSteps) //prilikom pokretanja polja svijetle 
         {
-            if(dark <=0)
+            if(dark <= 0)
             {
                 if(stepsIndex >= steps.size())
                 {
@@ -97,11 +97,16 @@ public class SimonSays implements ActionListener, MouseListener
                     light = steps.get(stepsIndex);
                     stepsIndex++;
                 }        
+            
                 dark = 2;
             }
-          
         }
-        
+        else if(stepsIndex == steps.size())
+        {
+            creatingSteps = true;
+            stepsIndex = 0;
+            dark = 2;
+        }
                
         simonPanel.repaint();
     }
@@ -211,23 +216,14 @@ public class SimonSays implements ActionListener, MouseListener
                 ticks = 1;
             }
             
-            if(light != 0 && !creatingSteps)
+            if(light != 0 && !creatingSteps && light == steps.get(stepsIndex))
             {
-                if(stepsIndex >= steps.size())
-                {
-                    creatingSteps = true;
-                    stepsIndex = 0;
-                    dark = 2;
-                    light = 0;
-                }
-                else if(light == steps.get(stepsIndex))
-                {
                     stepsIndex++;
-                }
-            
             }
+            
         }
     }
+  
 
     @Override
     public void mouseReleased(MouseEvent me) 
