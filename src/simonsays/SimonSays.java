@@ -3,6 +3,7 @@ package simonsays;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
@@ -27,7 +28,7 @@ public class SimonSays implements ActionListener, MouseListener
     
     public int light = 0, ticks, stepsIndex, dark;
     
-    public boolean creatingSteps = true;
+    public boolean creatingSteps = true, gameOver;
     
     public ArrayList<Integer> steps; //Korake predstavljamo kao niz int-ova 
     
@@ -58,7 +59,11 @@ public class SimonSays implements ActionListener, MouseListener
     {
         random = new Random();
         
-        steps = new ArrayList<>();
+        steps = new ArrayList<Integer>();
+        stepsIndex = 0;
+        dark = 2;
+        light = 0;
+        ticks = 0;
     }
     
     public static void main(String[] args) 
@@ -104,7 +109,7 @@ public class SimonSays implements ActionListener, MouseListener
         else if(stepsIndex == steps.size())
         {
             creatingSteps = true;
-            stepsIndex = 0;
+            //stepsIndex = 0;
             dark = 2;
         }
                
@@ -179,6 +184,24 @@ public class SimonSays implements ActionListener, MouseListener
         g.fillRect(WIDTH / 2 - 38, 0, 80, HEIGHT);
         g.fillRect(0, WIDTH / 2 - 38, WIDTH, 80);
         
+        /*g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", 1, 50));
+        if(gameOver)
+            g.drawString("GAME OVER", WIDTH / 2 - 150, HEIGHT / 2 + 27);*/   
+        
+        if(!gameOver)
+        {
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", 1, 90));
+            g.drawString(stepsIndex + "/" + steps.size(), WIDTH / 2 - 55, HEIGHT / 2 + 27);
+        }
+        else
+        {
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", 1, 50));
+            g.drawString("GAME OVER", WIDTH / 2 - 150, HEIGHT / 2 + 14);   
+        }
+        
         
     }
 
@@ -193,7 +216,7 @@ public class SimonSays implements ActionListener, MouseListener
     {
         int x = me.getX(), y = me.getY();
         
-        if(!creatingSteps) // ne moze se kliknuti na polje dok se kreiraju koraci igre
+        if(!creatingSteps && !gameOver) // ne moze se kliknuti na polje dok se kreiraju koraci igre
         {
             if(x > 0 && x < WIDTH / 2 && y > 0 && y < HEIGHT / 2)
             {
@@ -216,13 +239,26 @@ public class SimonSays implements ActionListener, MouseListener
                 ticks = 1;
             }
             
-            if(light != 0 && !creatingSteps && light == steps.get(stepsIndex))
+            if(light != 0)
             {
+                if(steps.get(stepsIndex) == light)
+                {
                     stepsIndex++;
+                }
+                else
+                {
+                    gameOver = true;
+                }
             }
-            
         }
+        else if(gameOver)
+        {
+            start();
+            gameOver = false;
+        }
+        
     }
+    
   
 
     @Override
