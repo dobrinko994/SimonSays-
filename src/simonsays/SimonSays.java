@@ -109,7 +109,7 @@ public class SimonSays implements ActionListener, MouseListener
         else if(stepsIndex == steps.size())
         {
             creatingSteps = true;
-            //stepsIndex = 0;
+            stepsIndex = 0;
             dark = 2;
         }
                
